@@ -57,9 +57,8 @@ const QuestionCard: React.FC<QuestionProps> = ({ question, onNext }) => {
                   : "bg-gray-200 hover:bg-gray-300"
               }`}
               onClick={() => handleAnswerSelection(answer)}
-            >
-              {answer}
-            </button>
+              dangerouslySetInnerHTML={{ __html: answer }} // Use this to render the answer
+            />
           </li>
         ))}
       </ul>
