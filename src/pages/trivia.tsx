@@ -7,6 +7,7 @@ import Link from "next/link";
 interface TriviaProps {
   category: string;
   amount: number;
+  difficulty: string;
 }
 
 interface Question {
@@ -18,9 +19,8 @@ interface Question {
   incorrect_answers: string[];
 }
 
-
-export default function Trivia({ category, amount }: TriviaProps) {
-const [questions, setQuestions] = useState<Question[]>([]);
+export default function Trivia({ category, amount, difficulty }: TriviaProps) {
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const router = useRouter();
@@ -28,12 +28,12 @@ const [questions, setQuestions] = useState<Question[]>([]);
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await axios.get(
-        `https://opentdb.com/api.php?amount=${amount}&category=${category}`
+        `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}`
       );
       setQuestions(response.data.results);
     };
     fetchQuestions();
-  }, [category, amount]);
+  }, [category, amount, difficulty]);
 
   const handleAnswerClick = (answer: string) => {
     const updatedAnswers = [...userAnswers, answer];
@@ -97,8 +97,8 @@ const [questions, setQuestions] = useState<Question[]>([]);
 }
 
 Trivia.getInitialProps = async (ctx: {
-  query: { category: any; amount: any };
+  query: { category: any; amount: any; difficulty: any };
 }) => {
-  const { category, amount } = ctx.query;
-  return { category, amount };
+  const { category, amount, difficulty } = ctx.query;
+  return { category, amount, difficulty };
 };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CategorySelector from "../components/CategorySelector";
+import DifficultySelector from "../components/DifficultySelector";
 import axios from "axios";
 import Link from "next/link";
 
@@ -8,10 +9,13 @@ import { Dispatch, SetStateAction } from "react";
 export default function Home({ categories }: { categories: any[] }) {
   const [category, setCategory] = useState<number>(0);
   const [amount, setAmount] = useState<number>(10);
+      const [difficulty, setDifficulty] = useState<string>("easy");
 
-  const startTrivia = async () => {
-    window.location.href = `/trivia?category=${category}&amount=${amount}`;
-  };
+
+const startTrivia = async () => {
+  window.location.href = `/trivia?category=${category}&amount=${amount}&difficulty=${difficulty}`;
+};
+
 
   const handleCategoryChange: Dispatch<SetStateAction<number>> = (
     value: SetStateAction<number>
@@ -31,6 +35,8 @@ export default function Home({ categories }: { categories: any[] }) {
           categories={categories}
           onCategoryChange={handleCategoryChange}
         />
+        <DifficultySelector onDifficultyChange={setDifficulty} />
+
         <div className="mt-4">
           <label
             htmlFor="amount"
